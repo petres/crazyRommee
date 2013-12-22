@@ -1,8 +1,10 @@
 package crazyRommee;
 
 import crazyRommee.Card;
+import crazyRommee.Table;
 import crazyRommee.Combination;
+import java.util.List;
 
 public interface PlayerInterface {
-	public Combination[] play(Card[] playerCards, Combination[] tableCombinations, Card stackCard);
+	public List<Combination> play(Table table);
 }

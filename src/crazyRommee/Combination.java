@@ -109,6 +109,12 @@ public class Combination {
 		return cards;
 	}
 
+	public Card.Rank getRank() {
+		if(type == Type.RANK)
+			return rank;
+		return null;
+	}
+
 	public Combination.Type getType() {
 		return type;
 	}
@@ -123,6 +129,15 @@ public class Combination {
 			str += " (" + type +")";
 
 		return str;
+	}
+
+	// LIST COMBINATION HELPER FUNCTIONS
+	public static List<Card> getCards(List<Combination> combinations) {
+		List<Card> cards = new ArrayList<Card>();
+		for(Combination combination: combinations) {
+			cards.addAll(combination.getCards());
+		}
+		return cards;
 	}
 
 }

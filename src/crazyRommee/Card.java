@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+
 public class Card {
 	public enum Rank {
 		ACE,
@@ -79,8 +80,21 @@ public class Card {
 			return "\033[1;47;30m" + card +  " \033[0m"; // BLACK
 	}
 
-	static public String getHiddenCardString() {
-		return "\033[1;47;30m" + new String(new int[] { 0x1F0A0 }, 0, 1) + " \033[0m";
+	static public String getHiddenCardString(Card.CardSet cardSet) {
+		int color = 30;
+		switch(cardSet) {
+			case RED:
+				color = 31;
+			break;
+			case BLUE:
+				color = 34;
+			break;
+		}
+		return "\033[1;47;" + color + "m" + new String(new int[] { 0x1F0A0 }, 0, 1) + " \033[0m";
+	}
+
+	public String getHiddenCardString() {
+		return getHiddenCardString(cardSet);
 	}
 
 	static public List<Card> createDeck(Card.CardSet cardSet) {
@@ -97,4 +111,30 @@ public class Card {
 	static public void shuffle(List<Card> cards) {
 		Collections.shuffle(cards, new Random(System.nanoTime()));
 	}
+
+	public int hashCode() {
+        return rank.ordinal()*19 + color.ordinal()*41 + cardSet.ordinal()*17;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (obj == this)
+            return true;
+        
+        if (!(obj instanceof Card))
+            return false;
+
+        Card card = (Card) obj;
+       
+       	if(card.rank != this.rank)
+       		return false;
+       	if(card.color != this.color)
+       		return false;
+       	if(card.cardSet != this.cardSet)
+       		return false;
+
+       	return true;
+    }
 }

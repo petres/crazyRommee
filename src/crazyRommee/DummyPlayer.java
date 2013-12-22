@@ -8,7 +8,11 @@ import java.util.List;
 
 public class DummyPlayer implements PlayerInterface {
 	public List<Combination> play(Table table) {
-		table.getCardFromDeck();
+		try {
+			table.getCardFromDeck();
+		} catch(GameManager.GameManagerException e) {
+			System.out.println(e);
+		}
 		return table.getCombinations();
 	}
 }

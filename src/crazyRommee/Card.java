@@ -25,8 +25,8 @@ public class Card {
 	}
 
 	public enum Color {
-		HEART,
 		SPADE,
+		HEART,
 		DIAMOND,
 		CLUB
 	}

@@ -27,7 +27,7 @@ public class Table {
 		List<Card> decks = new ArrayList<Card>();
 		decks.addAll(redDeck);
 		decks.addAll(blueDeck);
-		Card.shuffle(decks);
+		//Card.shuffle(decks);
 
 		stack.addAll(decks);
 
@@ -37,9 +37,13 @@ public class Table {
 
 	}
 	
-	public Card getCardFromDeck() {
+	public Card getCardFromDeck()  throws GameManager.GameManagerException {
 		return null;
 		//throw new Exception("not allowed");
+	}
+	
+	public List<Card> getMyCards() {
+		return null;
 	}
 
 	public List<Combination> getCombinations() {
@@ -52,7 +56,7 @@ public class Table {
 		str += "\n----------------------------------------------------------------";
 		// Stack
 		str += "\n";
-		str += "  Stack (Count: " + stack.size() + "): ";
+		str += "  Stack (Count: " + stack.size() + "): \n    ";
 		str += stack.peek().getHiddenCardString() + "\n";
 		////////////////
 		
@@ -60,7 +64,7 @@ public class Table {
 		str += "\n";
 		int p = 0;
 		for(List<Card> playerCards: allPlayerCards) {
-			str += "  Cards of player " + (++p) + " (Count: " + playerCards.size() + "): ";
+			str += "  Cards of player " + (++p) + " (Count: " + playerCards.size() + "): \n    ";
 			for(Card card: playerCards) {
 				str += card.getHiddenCardString();
 			}
@@ -71,10 +75,9 @@ public class Table {
 
 		// COMBINATIONS
 		str += "\n";
-		str += "  Combinations (Count: " + combinations.size() + "): ";
+		str += "  Combinations (Count: " + combinations.size() + "): \n    ";
 		for(Combination combination: combinations) {
 			str += combination;
-			str += "\n";
 		}
 		////////////////
 

@@ -27,7 +27,8 @@ public class Table {
 		List<Card> decks = new ArrayList<Card>();
 		decks.addAll(redDeck);
 		decks.addAll(blueDeck);
-		//Card.shuffle(decks);
+		
+		Card.shuffle(decks);
 
 		stack.addAll(decks);
 
@@ -75,7 +76,7 @@ public class Table {
 
 		// COMBINATIONS
 		str += "\n";
-		str += "  Combinations (Count: " + combinations.size() + "): \n    ";
+		str += "  Combinations on the table (Count: " + combinations.size() + "): \n    ";
 		for(Combination combination: combinations) {
 			str += combination;
 		}

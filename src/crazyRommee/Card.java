@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Comparator;
 import java.util.ArrayList;
 
 
@@ -80,36 +81,8 @@ public class Card {
 			return "\033[1;47;30m" + card +  " \033[0m"; // BLACK
 	}
 
-	static public String getHiddenCardString(Card.CardSet cardSet) {
-		int color = 30;
-		switch(cardSet) {
-			case RED:
-				color = 31;
-			break;
-			case BLUE:
-				color = 34;
-			break;
-		}
-		return "\033[1;47;" + color + "m" + new String(new int[] { 0x1F0A0 }, 0, 1) + " \033[0m";
-	}
-
 	public String getHiddenCardString() {
 		return getHiddenCardString(cardSet);
-	}
-
-	static public List<Card> createDeck(Card.CardSet cardSet) {
-		List<Card> deck = new ArrayList<Card>();
-		//Card[] deck = new Card[Rank.values().length * Color.values().length];
-		int i = 0;
-		for (Rank rank : Rank.values())
-			for (Color color : Color.values())
-				deck.add(new Card(rank, color, cardSet));
-				//deck[i++] = new Card(rank, color, cardSet);
-		return deck;
-	}
-
-	static public void shuffle(List<Card> cards) {
-		Collections.shuffle(cards, new Random(System.nanoTime()));
 	}
 
 	public int hashCode() {
@@ -137,4 +110,53 @@ public class Card {
 
        	return true;
     }
+
+	static public String getHiddenCardString(Card.CardSet cardSet) {
+		int color = 30;
+		switch(cardSet) {
+			case RED:
+				color = 31;
+			break;
+			case BLUE:
+				color = 34;
+			break;
+		}
+		return "\033[1;47;" + color + "m" + new String(new int[] { 0x1F0A0 }, 0, 1) + " \033[0m";
+	}
+
+	static public List<Card> createDeck(Card.CardSet cardSet) {
+		List<Card> deck = new ArrayList<Card>();
+		//Card[] deck = new Card[Rank.values().length * Color.values().length];
+		int i = 0;
+		for (Rank rank : Rank.values())
+			for (Color color : Color.values())
+				deck.add(new Card(rank, color, cardSet));
+				//deck[i++] = new Card(rank, color, cardSet);
+		return deck;
+	}
+
+	static public void shuffle(List<Card> cards) {
+		Collections.shuffle(cards, new Random(System.nanoTime()));
+	}
+
+	static public void sort(List<Card> cards) {
+	    Collections.sort(cards, new Comparator<Card>() {
+	        @Override
+	        public int compare(Card card1, Card card2) {
+	        	Integer color1 = card1.getColor().ordinal();
+	        	Integer color2 = card2.getColor().ordinal();
+
+	        	if(color1 != color2) {
+	        		return color1.compareTo(color2);
+	        	} else {
+	        		Integer rank1 = card1.getRank().ordinal();
+	        		Integer rank2 = card2.getRank().ordinal();
+	        		if(rank1 != rank2)
+	        			return rank1.compareTo(rank2);
+	        		else
+	        			return 0;
+	        	}
+	        }
+	    });
+	}
 }

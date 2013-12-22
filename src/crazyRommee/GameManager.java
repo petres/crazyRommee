@@ -53,32 +53,37 @@ public class GameManager extends Table {
 			getCardFromDeck();
 		}
 
-		// - are there two combinations with same rank 
-		boolean[] ranks = new boolean[Card.Rank.values().length];
-		for(Combination combination: combinations) {
-			if(combination.getType() == Combination.Type.RANK) {
-				if(ranks[combination.getRank().ordinal()])
-					throw new GameManagerException(combination + " already on table!");
-				ranks[combination.getRank().ordinal()] = true;
-			}
-		}
-
-		// calc player cards
+		// - calc player cards
 		for(Card card: playerCardsBefore) {
 			if(!combinationCardsAfter.contains(card))
 				playerCardsAfter.add(card);
 		}
 
+		if(playerCardsAfter.size() == 0) {
+			// - are there two combinations with same rank 
+			boolean[] ranks = new boolean[Card.Rank.values().length];
+			for(Combination combination: combinations) {
+				if(combination.getType() == Combination.Type.RANK) {
+					if(ranks[combination.getRank().ordinal()])
+						throw new GameManagerException(combination + " already on table!");
+					ranks[combination.getRank().ordinal()] = true;
+				}
+			}
+		} 
 
+
+		Card.sort(playerCardsAfter);
 		allPlayerCards.set(currentPlayer, playerCardsAfter);
 		this.combinations = combinations;
-		//allPlayerCards.set(currentPlayer, );
 		
 
+		if(playerCardsAfter.size() == 0) {
+			System.out.println("PLAYER HAS WON");
+			return true;
+		}
 
 		// NEXT PLAYER 
 		currentPlayer = (++currentPlayer)%playerInterfaces.length;
-
 		return false;
 	}
 
@@ -93,8 +98,6 @@ public class GameManager extends Table {
 		gameManager.init();
 
 		while(!gameManager.play()) {}
-
-		//testCombination();
 	}
 
 	public Card getCardFromDeck() throws GameManagerException{
@@ -107,24 +110,6 @@ public class GameManager extends Table {
 
 	public List<Card> getMyCards() {
 		return new ArrayList<Card>(allPlayerCards.get(currentPlayer));
-	}
-
-	public String toString() {
-		String str = super.toString();
-		
-		/*
-		// CARDS OF CURENT PLAYER
-		str += "\n";
-		List<Card> playerCards = allPlayerCards.get(currentPlayer);
-		str += "  Player " + (currentPlayer + 1) + ", your cards:  \n    ";
-		for(Card card: playerCards) {
-			str += card;
-		}
-		str += "\n";
-		////////////////
-
-		str += "\n----------------------------------------------------------------\n";*/
-		return str;
 	}
 
 	public static void testCombination() {

@@ -21,13 +21,11 @@ public class Combination {
 
 	private Card.Rank rank;
 	private Card.Color color;
-	
-	public Combination(Card[] cards) throws CombinationException{
-		this(Arrays.asList(cards));
-	}
 
 	public Combination(List<Card> cards) throws CombinationException{
 		this.cards = cards;
+		Card.sort(this.cards);
+
 		color = null;
 		rank = null;
 
@@ -77,11 +75,10 @@ public class Combination {
 
 			// GET START OF STREET
 			int tIndex = 0;
-			int tValue = inCards[tIndex];
 			for(int i = 1; i < Card.Rank.values().length; i++) {
-				if(inCards[i] > tValue) {
-					tValue = inCards[i];
+				if(inCards[i] > inCards[i - 1]) {
 					tIndex = i;
+					break; 
 				}
 			}
 
@@ -123,10 +120,10 @@ public class Combination {
 		//String str = "COMB. (" + getType() + "): ";
 		String str = "";
 		for(Card card: getCards()) {
-			str += card;
+			str += card + " ";
 		}
 		if(type != null)
-			str += " (" + type +")";
+			str += "(" + type.toString().substring(0,1) +") ";
 
 		return str;
 	}

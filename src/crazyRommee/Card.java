@@ -3,6 +3,8 @@ package crazyRommee;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Card {
 	public enum Rank {
@@ -72,27 +74,27 @@ public class Card {
 			rankOffset++;
 		String card = new String(new int[] { 0x1F0A1 + rankOffset + 16*getColor().ordinal() }, 0, 1);
 		if(getColor() == Color.HEART || getColor() == Color.DIAMOND)
-			return "\033[1;47;31m" + card +  " \033[0m";
+			return "\033[1;47;31m" + card +  " \033[0m"; // RED
 		else
-			return "\033[1;47;30m" + card +  " \033[0m";
+			return "\033[1;47;30m" + card +  " \033[0m"; // BLACK
 	}
 
 	static public String getHiddenCardString() {
 		return "\033[1;47;30m" + new String(new int[] { 0x1F0A0 }, 0, 1) + " \033[0m";
 	}
 
-	
-
-	static public Card[] createDeck(Card.CardSet cardSet) {
-		Card[] deck = new Card[Rank.values().length * Color.values().length];
+	static public List<Card> createDeck(Card.CardSet cardSet) {
+		List<Card> deck = new ArrayList<Card>();
+		//Card[] deck = new Card[Rank.values().length * Color.values().length];
 		int i = 0;
 		for (Rank rank : Rank.values())
 			for (Color color : Color.values())
-				deck[i++] = new Card(rank, color, cardSet);
+				deck.add(new Card(rank, color, cardSet));
+				//deck[i++] = new Card(rank, color, cardSet);
 		return deck;
 	}
 
-	static public void shuffle(Card[] cards) {
-		Collections.shuffle(Arrays.asList(cards), new Random(System.nanoTime()));
+	static public void shuffle(List<Card> cards) {
+		Collections.shuffle(cards, new Random(System.nanoTime()));
 	}
 }

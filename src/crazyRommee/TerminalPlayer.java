@@ -7,6 +7,7 @@ import crazyRommee.Combination;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.NumberFormatException;
 
 public class TerminalPlayer implements PlayerInterface {
 	List<Card> allAvailableCards = new ArrayList<Card>();
@@ -69,7 +70,10 @@ public class TerminalPlayer implements PlayerInterface {
 	    				}
 	    				combine(tCards);
 	    				System.out.print(this);
-					} catch(Exception e) {
+					} catch(Combination.CombinationException e) {
+						System.out.println(e);
+						System.out.print(this);
+					} catch(NumberFormatException e) {
 						System.out.println(e);
 						System.out.print(this);
 					}
@@ -148,11 +152,13 @@ public class TerminalPlayer implements PlayerInterface {
 		List<Integer> toDelete = new ArrayList<Integer>();
 		for(Card card: combinationCards) {
 			if(tempCards.contains(card)) {
+				System.out.println(card + " removed from temp");
 				tempCards.remove(card);
 				continue;
 			}
 
 			if(playerCardsNow.contains(card)) {
+				System.out.println(card + " removed from player");
 				playerCardsNow.remove(card);
 				continue;
 			}
@@ -160,16 +166,20 @@ public class TerminalPlayer implements PlayerInterface {
 			int i = 0;
 			for(Combination combination: combinations) {
 				if(combination.getCards().contains(card)) {
-					toDelete.add(i);
+					System.out.println("have to delete comb.: " + combination);
+					if(!toDelete.contains(i))
+						toDelete.add(0, i);
 				}
 				i++;
 			}
 		}
+
 	    combinations.add(tCombination);
 	    for(int i: toDelete) {
 	    	for(Card card: combinations.get(i).getCards()) {
 	    		if(combinationCards.contains(card))
 	    			continue;
+
 	    		if(playerCardsBefore.contains(card))
 	    			playerCardsNow.add(card);
 	    		else

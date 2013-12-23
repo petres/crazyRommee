@@ -32,10 +32,11 @@ public class Table {
 
 		stack.addAll(decks);
 
-		for(List<Card> playerCards: allPlayerCards)
+		for(List<Card> playerCards: allPlayerCards) {
 			for(int i = 0; i < countOfCardsAtStart; i++)
 				playerCards.add(stack.pop());
-
+			Card.sort(playerCards);
+		}
 	}
 	
 	public Card getCardFromDeck()  throws GameManager.GameManagerException {

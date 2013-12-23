@@ -23,13 +23,13 @@ public class Combination {
 	private Card.Color color;
 
 	public Combination(List<Card> cards) throws CombinationException{
-		this.cards = cards;
+		this.cards = new ArrayList<Card>(cards);
 		Card.sort(this.cards);
 
 		color = null;
 		rank = null;
 
-		if(cards.size() < 3)
+		if(this.cards.size() < 3)
 			throw new Combination.CombinationException("Can not create Combination, to less cards!");
 
 		boolean sameRank = true;
@@ -38,7 +38,7 @@ public class Combination {
 		List<Card.Rank>  ranks  = new ArrayList<Card.Rank>();
 		List<Card.Color> colors = new ArrayList<Card.Color>();
 
-		for(Card card: cards) {
+		for(Card card: this.cards) {
 			if(rank != null && card.getRank() != rank)
 				sameRank = false;
 			rank = card.getRank();
@@ -82,12 +82,21 @@ public class Combination {
 				}
 			}
 
+			// ORDER
+			List<Card> streetOrdered = new ArrayList<Card>();
 			// GO ALONG THIS STREET
 			int j = tIndex;			
-			while (inCards[j%Card.Rank.values().length] > 0) {
-				inCards[j%Card.Rank.values().length]--;
-				j++;
+			while (inCards[j] > 0) {
+				for(Card card: this.cards)
+					if(card.getRank().ordinal() == j) {
+						streetOrdered.add(card);
+						this.cards.remove(card);
+						break;
+					}
+				inCards[j]--;
+				j = (j + 1)%Card.Rank.values().length;
 			}
+			this.cards = streetOrdered;
 
 			// STILL CARDS
 			for(int i = 1; i < Card.Rank.values().length; i++) {

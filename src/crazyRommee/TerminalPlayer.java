@@ -39,15 +39,16 @@ public class TerminalPlayer implements PlayerInterface {
     		if (input.isEmpty()) {
     			input = "f";
     		}
-    		switch(input.substring(0, 1)) {
-    			case "f":{
+    		char c = input.charAt(0);
+    		switch(c) {
+    			case 'f':{
     				System.out.println("--------- FINISHED --------------");
 	    			break outerloop;
-    			} case "r":{
+    			} case 'r':{
     				System.out.println("--------- REFRESHED --------------");
     				System.out.print(this);
 	    			break;
-    			} case "t": {
+    			} case 't': {
     				try {
     					Card tCard = table.getCardFromDeck();
     					playerCardsNow.add(tCard);
